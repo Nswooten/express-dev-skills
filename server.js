@@ -5,16 +5,20 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import createError from 'http-errors'
 import logger from 'morgan'
+import methodOverride from 'method-override'
 import './config/database.js'
 // import routers
 import { router as indexRouter } from './routes/index.js'
 import { router as skillsRouter } from './routes/skills.js'
+import { log } from "console"
 
 // create the express app
 const app = express()
 
 // view engine setup
 app.set('view engine', 'ejs')
+
+
 
 // basic middleware
 app.use(logger('dev'))
@@ -25,10 +29,22 @@ app.use(
     path.join(path.dirname(fileURLToPath(import.meta.url)), 'public')
   )
 )
+app.use(methodOverride('_method'))
+
+// custom middleware
+app.use(function(req, res, next){
+  console.log("yellow")
+  next()
+  req.time = new Date().toLocaleTimeString()
+})
+
 
 // mount imported routes
 app.use('/', indexRouter)
 app.use('/skills', skillsRouter)
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

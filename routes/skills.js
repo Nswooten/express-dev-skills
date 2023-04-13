@@ -9,7 +9,7 @@ const router = Router()
 router.get('/', skillsCtrl.index)
 router.get("/new", skillsCtrl.new)
 router.get("/:skillId", skillsCtrl.show)
-
+router.delete("/:skillId", skillsCtrl.delete)
 
 
 router.post("/", skillsCtrl.create)
